@@ -3,80 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>7 Days to Go - Doc Sahiba</title>
+    <title>7 Days - The Heartbeat Case</title>
     <style>
-        :root { --med-red: #d90429; --paper: #ffffff; --ink: #1b4965; }
-        body, html { margin:0; padding:0; overflow:hidden; font-family:'Times New Roman', serif; background: #000; }
+        :root { --main-red: #ff4d6d; --gold: #ffd700; --glass: rgba(255, 255, 255, 0.1); }
+        body, html { margin:0; padding:0; overflow:hidden; font-family: 'Poppins', sans-serif; background: #0b090a; color: white; }
 
         .stage { display:none; width:100vw; height:100vh; justify-content:center; align-items:center; flex-direction:column; text-align:center; position:absolute; padding: 20px; box-sizing: border-box; }
-        .active { display:flex; animation: fadeIn 0.6s forwards; }
+        .active { display:flex; animation: fadeIn 0.8s ease-in-out; }
 
-        /* Cabin Door */
-        .door { width: 130px; height: 200px; background: #5d4037; border: 4px solid #3e2723; border-radius: 4px; position: relative; cursor: pointer; }
-        .door::after { content: 'DOC ROOM'; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 2px 8px; font-size: 0.6rem; font-weight: bold; }
+        /* Glowing Heartbeat Line */
+        .ecg-line { width: 100%; height: 2px; background: var(--main-red); position: relative; box-shadow: 0 0 15px var(--main-red); animation: pulse 1.5s infinite; }
         
-        /* Rx Card */
-        .rx-card { width: 100%; max-width: 400px; background: var(--paper); color: #222; padding: 25px; border-radius: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: left; border-left: 10px solid var(--med-red); }
-        .rx-header { border-bottom: 2px solid #333; margin-bottom: 15px; padding-bottom: 5px; font-weight: bold; color: var(--med-red); }
+        /* Premium Door */
+        .cabin-door { width: 140px; height: 240px; border: 3px solid var(--glass); background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); border-radius: 10px; position: relative; cursor: pointer; backdrop-filter: blur(5px); box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        .cabin-door::before { content: 'DR. ASHU JANU'; position: absolute; top: 30px; width: 100%; color: white; font-size: 0.7rem; letter-spacing: 2px; }
+        .handle { position: absolute; right: 15px; top: 50%; width: 8px; height: 30px; background: var(--gold); border-radius: 5px; box-shadow: 0 0 10px var(--gold); }
 
-        .btn { background: var(--med-red); color: white; border: none; padding: 15px; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%; font-size: 1rem; }
-        .point { margin-bottom: 12px; line-height: 1.4; border-bottom: 1px solid #eee; padding-bottom: 8px; font-size: 0.95rem; font-style: italic; }
+        /* Floating Magic */
+        .floating-emoji { position: absolute; font-size: 25px; opacity: 0.3; animation: float 6s infinite ease-in-out; pointer-events: none; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Romantic Letter Card */
+        .premium-card { width: 100%; max-width: 380px; background: white; color: #1a1a1a; border-radius: 20px; padding: 30px; box-shadow: 0 20px 50px rgba(255, 77, 109, 0.3); border-top: 8px solid var(--main-red); text-align: left; position: relative; }
+        .btn-next { background: var(--main-red); color: white; border: none; padding: 15px; border-radius: 50px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; font-size: 1rem; box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4); }
+
+        .line-item { margin-bottom: 15px; padding-left: 15px; border-left: 3px solid var(--main-red); font-style: italic; font-size: 0.95rem; line-height: 1.5; color: #333; }
+
+        @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
+        @keyframes float { 0% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-20px) rotate(10deg); } 100% { transform: translateY(0) rotate(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
 
     <div id="slide1" class="stage active">
-        <div class="door" onclick="nextSlide(1, 2)">
-            <div style="position:absolute; right:10px; top:50%; width:10px; height:10px; background:gold; border-radius:50%;"></div>
+        <h2 style="color: var(--main-red); letter-spacing: 3px; margin-bottom: 40px;">PRIVATE CABIN</h2>
+        <div class="cabin-door" onclick="nextSlide(1, 2)">
+            <div class="handle"></div>
         </div>
-        <h3 style="color: white; margin-top: 20px;">*KNOCK KNOCK*</h3>
-        <p style="color: #888;">Tap to enter Doc Sahiba's Cabin</p>
+        <p style="margin-top: 30px; color: #888;">* Gently Tap the Door *</p>
     </div>
 
-    <div id="slide2" class="stage" style="background: #f8f9fa;">
-        <div style="padding: 25px; border: 3px dashed var(--med-red); background: white;">
-            <h2 style="color: var(--med-red);">🚨 EMERGENCY!</h2>
-            <p style="color: #333; font-size: 1.1rem;">"Ma'am, ek shaks ye letter de kar bhag gaya... keh raha tha uski dharkanein sirf aap parh sakti hain!"</p>
-            <button class="btn" onclick="nextSlide(2, 3)">Open Case File ✉️</button>
-        </div>
+    <div id="slide2" class="stage">
+        <div class="ecg-line"></div>
+        <h1 style="color: var(--main-red); margin-top: 30px;">🚨 URGENT CASE!</h1>
+        <p style="padding: 0 20px; font-size: 1.2rem; line-height: 1.6;">"Ma'am, ek patient ka dil out of control ho raha hai... Wo sirf aapka naam le raha hai!"</p>
+        <button class="btn-next" onclick="nextSlide(2, 3)">Check Diagnosis 🩺</button>
     </div>
 
-    <div id="slide3" class="stage" style="background: #e9ecef;">
-        <div class="rx-card">
-            <div class="rx-header">Rx: Saim's Diagnosis (Page 1)</div>
-            <div class="point">1. Jab se tumhein dekha hai, mujhe apna aap bhool gaya hai, bas tumhari talash rehti hai.</div>
-            <div class="point">2. Tum mere liye sirf ek Doctor nahi, meri zindagi ki sabse haseen "Shifa" ho.</div>
-            <div class="point">3. Log kehte hain dil baayi (left) taraf hota hai, par mera dil wahan hai jahan tum ho.</div>
-            <div class="point">4. Tumhare bina meri har pulse rate itni low hoti hai ke lagta hai saans ruk jayegi.</div>
-            <div class="point">5. Main apna har marz tumhare naam karta hoon, bas tumhari ek muskurahat dawa ban jaye.</div>
-            <button class="btn" onclick="nextSlide(3, 4)">Next Page ➡️</button>
-        </div>
-    </div>
-
-    <div id="slide4" class="stage" style="background: #dee2e6;">
-        <div class="rx-card">
-            <div class="rx-header">Rx: Saim's Diagnosis (Page 2)</div>
-            <div class="point">1. Tumhein dekh kar dil ki dharkan itni teez ho jati hai ke koi ECG machine parh nahi sakti.</div>
-            <div class="point">2. Pharm-D ki degree tumhare paas hai, par meri rooh ka sara data tumhare paas hai.</div>
-            <div class="point">3. Tumhara chehra meri wo rozana ki dose hai jis ke bina mera din mukammal nahi hota.</div>
-            <div class="point">4. Main waada karta hoon ke tumhara har dukh mera hoga aur meri har khushi tumhari amanat.</div>
-            <div class="point">5. Tumhe dekho tu sakoon rehta hai, na dekhoon to poori duniya be-rang lagti hai.</div>
-            <button class="btn" onclick="nextSlide(4, 5)">Next Page ➡️</button>
+    <div id="slide3" class="stage" style="background: #fff0f3;">
+        <div class="floating-emoji" style="top:10%; left:10%;">🦄</div>
+        <div class="floating-emoji" style="bottom:15%; right:10%;">❤️</div>
+        <div class="premium-card">
+            <h3 style="color: var(--main-red);">Condition: Chronic Love</h3>
+            <div class="line-item">1. Jab se tumhein dekha hai, mujhe apna aap bhool gaya hai, bas tumhari talash rehti hai.</div>
+            <div class="line-item">2. Tum mere liye sirf ek Doctor nahi, meri zindagi ki sabse haseen "Shifa" ho.</div>
+            <div class="line-item">3. Log kehte hain dil baayi (left) taraf hota hai, par mera dil wahan hai jahan tum ho.</div>
+            <div class="line-item">4. Tumhare bina meri har pulse rate itni low hoti hai ke lagta hai saans ruk jayegi.</div>
+            <div class="line-item">5. Main apna har marz tumhare naam karta hoon, bas tumhari ek muskurahat dawa ban jaye.</div>
+            <button class="btn-next" onclick="nextSlide(3, 4)">Next Page ➡️</button>
         </div>
     </div>
 
-    <div id="slide5" class="stage" style="background: #ced4da;">
-        <div class="rx-card">
-            <div class="rx-header">Rx: Final Report (7 Days Left)</div>
-            <div class="point">1. 7 din baqi hain... meri maseeha ki birthday mere liye saal ka sabse bada din hai.</div>
-            <div class="point">2. Main hamesha tumhara protector ban kar sath rahoonga, har mushkil se tumhe bachata rahoonga.</div>
-            <div class="point">3. Tumhare hathon ki shifa meri zindagi ka sabse bada tohfa hai, hamesha mere sath rehna.</div>
-            <div class="point">4. Saim sirf tumhara hai aur hamesha tumhare kadmon ki dhool ban kar sath nibhayega.</div>
-            <div class="point">5. Advance Happy Birthday, Ashu Janu! Tumhari muskurahat meri jeet hai.</div>
-            <p style="text-align: right; font-weight: bold; margin-top: 10px;">- Tera Saim ❤️</p>
-            <button class="btn" style="background:#000;" onclick="location.reload()">Re-read Report</button>
+    <div id="slide4" class="stage" style="background: #fff0f3;">
+        <div class="floating-emoji" style="top:20%; right:15%;">✨</div>
+        <div class="premium-card">
+            <h3 style="color: var(--main-red);">Pulse Status: Racing</h3>
+            <div class="line-item">1. Tumhein dekh kar dil ki dharkan itni teez ho jati hai ke koi ECG machine parh nahi sakti.</div>
+            <div class="line-item">2. Pharm-D ki degree tumhare paas hai, par meri rooh ka sara data tumhare paas hai.</div>
+            <div class="line-item">3. Tumhara chehra meri wo rozana ki dose hai jis ke bina mera din mukammal nahi hota.</div>
+            <div class="line-item">4. Main waada karta hoon ke tumhara har dukh mera hoga aur meri har khushi tumhari amanat.</div>
+            <div class="line-item">5. Tumhe dekho tu sakoon rehta hai, na dekhoon to poori duniya be-rang lagti hai.</div>
+            <button class="btn-next" onclick="nextSlide(4, 5)">Next Page ➡️</button>
+        </div>
+    </div>
+
+    <div id="slide5" class="stage" style="background: #fff0f3;">
+        <div class="floating-emoji" style="top:5%; left:50%;">🦄</div>
+        <div class="premium-card">
+            <h3 style="color: var(--main-red);">Final Recommendation</h3>
+            <div class="line-item">1. 7 din baqi hain... meri maseeha ki birthday mere liye saal ka sabse bada din hai.</div>
+            <div class="line-item">2. Main hamesha tumhara protector ban kar sath rahoonga, har mushkil se tumhe bachata rahoonga.</div>
+            <div class="point line-item">3. Tumhare hathon ki shifa meri zindagi ka sabse bada tohfa hai, hamesha mere sath rehna.</div>
+            <div class="line-item">4. Saim sirf tumhara hai aur hamesha tumhare kadmon ki dhool ban kar sath nibhayega.</div>
+            <div class="line-item">5. Advance Happy Birthday, Ashu Janu! Tumhari muskurahat meri jeet hai.</div>
+            <p style="text-align: right; font-weight: bold; margin-top: 20px; color: var(--main-red);">- Tera Saim ❤️</p>
+            <button class="btn-next" style="background: #333;" onclick="location.reload()">Re-examine Case</button>
         </div>
     </div>
 
@@ -84,7 +95,6 @@
         function nextSlide(current, next) {
             document.getElementById('slide' + current).style.display = 'none';
             document.getElementById('slide' + next).style.display = 'flex';
-            document.getElementById('slide' + next).classList.add('active');
         }
     </script>
 </body>
