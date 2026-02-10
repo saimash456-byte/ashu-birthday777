@@ -3,99 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>7 Days - The Heartbeat Case</title>
+    <title>7 Days Left - Emergency</title>
     <style>
-        :root { --main-red: #ff4d6d; --gold: #ffd700; --glass: rgba(255, 255, 255, 0.1); }
-        body, html { margin:0; padding:0; overflow:hidden; font-family: 'Poppins', sans-serif; background: #0b090a; color: white; }
-
+        :root { --red: #d90429; --blue: #00b4d8; --pink: #ff85a1; }
+        body, html { margin:0; padding:0; overflow:hidden; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000; color: white; }
         .stage { display:none; width:100vw; height:100vh; justify-content:center; align-items:center; flex-direction:column; text-align:center; position:absolute; padding: 20px; box-sizing: border-box; }
-        .active { display:flex; animation: fadeIn 0.8s ease-in-out; }
+        .active { display:flex; animation: fadeIn 0.5s forwards; }
 
-        /* Glowing Heartbeat Line */
-        .ecg-line { width: 100%; height: 2px; background: var(--main-red); position: relative; box-shadow: 0 0 15px var(--main-red); animation: pulse 1.5s infinite; }
+        /* Door */
+        .door { width: 130px; height: 210px; background: #5d4037; border: 4px solid #3e2723; border-radius: 5px; position: relative; cursor: pointer; }
+        .door::after { content: 'DOC ROOM'; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 2px 8px; font-size: 0.6rem; font-weight: bold; }
         
-        /* Premium Door */
-        .cabin-door { width: 140px; height: 240px; border: 3px solid var(--glass); background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); border-radius: 10px; position: relative; cursor: pointer; backdrop-filter: blur(5px); box-shadow: 0 0 30px rgba(0,0,0,0.5); }
-        .cabin-door::before { content: 'DR. ASHU JANU'; position: absolute; top: 30px; width: 100%; color: white; font-size: 0.7rem; letter-spacing: 2px; }
-        .handle { position: absolute; right: 15px; top: 50%; width: 8px; height: 30px; background: var(--gold); border-radius: 5px; box-shadow: 0 0 10px var(--gold); }
+        /* ECG Line Animation */
+        .ecg-container { width: 100%; height: 150px; position: relative; overflow: hidden; background: #000; border-bottom: 2px solid #333; }
+        .ecg-svg { width: 200%; height: 100%; stroke: var(--red); stroke-width: 3; fill: none; stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: dash 3s linear infinite; }
+        @keyframes dash { to { stroke-dashoffset: 0; } }
 
-        /* Floating Magic */
-        .floating-emoji { position: absolute; font-size: 25px; opacity: 0.3; animation: float 6s infinite ease-in-out; pointer-events: none; }
+        /* Heart Beat */
+        .heart { font-size: 80px; color: var(--red); cursor: pointer; animation: beat 0.8s infinite; }
+        @keyframes beat { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
-        /* Romantic Letter Card */
-        .premium-card { width: 100%; max-width: 380px; background: white; color: #1a1a1a; border-radius: 20px; padding: 30px; box-shadow: 0 20px 50px rgba(255, 77, 109, 0.3); border-top: 8px solid var(--main-red); text-align: left; position: relative; }
-        .btn-next { background: var(--main-red); color: white; border: none; padding: 15px; border-radius: 50px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; font-size: 1rem; box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4); }
+        /* Pills */
+        .pill-box { display: flex; gap: 20px; margin-top: 30px; }
+        .pill { width: 80px; height: 40px; border-radius: 25px; cursor: pointer; border: 2px solid #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; }
+        .disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
 
-        .line-item { margin-bottom: 15px; padding-left: 15px; border-left: 3px solid var(--main-red); font-style: italic; font-size: 0.95rem; line-height: 1.5; color: #333; }
-
-        @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
-        @keyframes float { 0% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-20px) rotate(10deg); } 100% { transform: translateY(0) rotate(0); } }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        /* Letter/Modal */
+        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:100; justify-content:center; align-items:center; padding:20px; box-sizing:border-box; }
+        .modal-content { background:white; color:#222; padding:25px; border-radius:15px; width:100%; max-width:400px; text-align:left; position:relative; }
+        
+        .btn { background: var(--red); color:white; border:none; padding:15px; border-radius:8px; width:100%; font-weight:bold; margin-top:15px; cursor:pointer; }
+        
+        .hug-arms { font-size: 100px; text-align: center; animation: pulse 1s infinite alternate; display: block; }
+        @keyframes pulse { from { transform: scale(0.8); } to { transform: scale(1.1); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div id="slide1" class="stage active">
-        <h2 style="color: var(--main-red); letter-spacing: 3px; margin-bottom: 40px;">PRIVATE CABIN</h2>
-        <div class="cabin-door" onclick="nextSlide(1, 2)">
-            <div class="handle"></div>
+        <div class="door" onclick="playKnock()">
+            <div style="position:absolute; right:10px; top:50%; width:10px; height:10px; background:gold; border-radius:50%;"></div>
         </div>
-        <p style="margin-top: 30px; color: #888;">* Gently Tap the Door *</p>
+        <h3 id="knockText" style="margin-top:20px;">KNOCK KNOCK</h3>
     </div>
 
     <div id="slide2" class="stage">
-        <div class="ecg-line"></div>
-        <h1 style="color: var(--main-red); margin-top: 30px;">🚨 URGENT CASE!</h1>
-        <p style="padding: 0 20px; font-size: 1.2rem; line-height: 1.6;">"Ma'am, ek patient ka dil out of control ho raha hai... Wo sirf aapka naam le raha hai!"</p>
-        <button class="btn-next" onclick="nextSlide(2, 3)">Check Diagnosis 🩺</button>
+        <h2>"Ma'am ek emergency hai!"</h2>
+        <button class="btn" onclick="nextSlide(2, 3)">Kia Hua?</button>
     </div>
 
-    <div id="slide3" class="stage" style="background: #fff0f3;">
-        <div class="floating-emoji" style="top:10%; left:10%;">🦄</div>
-        <div class="floating-emoji" style="bottom:15%; right:10%;">❤️</div>
-        <div class="premium-card">
-            <h3 style="color: var(--main-red);">Condition: Chronic Love</h3>
-            <div class="line-item">1. Jab se tumhein dekha hai, mujhe apna aap bhool gaya hai, bas tumhari talash rehti hai.</div>
-            <div class="line-item">2. Tum mere liye sirf ek Doctor nahi, meri zindagi ki sabse haseen "Shifa" ho.</div>
-            <div class="line-item">3. Log kehte hain dil baayi (left) taraf hota hai, par mera dil wahan hai jahan tum ho.</div>
-            <div class="line-item">4. Tumhare bina meri har pulse rate itni low hoti hai ke lagta hai saans ruk jayegi.</div>
-            <div class="line-item">5. Main apna har marz tumhare naam karta hoon, bas tumhari ek muskurahat dawa ban jaye.</div>
-            <button class="btn-next" onclick="nextSlide(3, 4)">Next Page ➡️</button>
+    <div id="slide3" class="stage">
+        <h2>"Banda bhagta aaya aur ye letter de gaya... bht serious halat hai!"</h2>
+        <button class="btn" onclick="nextSlide(3, 4)">Check Patient</button>
+    </div>
+
+    <div id="slide4" class="stage">
+        <div class="heart" onclick="triggerVibrate()">❤️</div>
+        <p>Touch the heart to check pulse</p>
+    </div>
+
+    <div id="slide5" class="stage">
+        <div class="ecg-container">
+            <svg class="ecg-svg" viewBox="0 0 1000 100">
+                <path d="M0,50 L50,50 L60,20 L75,80 L90,50 L150,50 L160,10 L180,90 L200,50 L300,50 L310,20 L325,80 L340,50 L1000,50" />
+            </svg>
+        </div>
+        <h3 style="padding:20px;">"Tmne dil ko touch keya tu dekho teez hogai dharkan!"</h3>
+        <button class="btn" onclick="nextSlide(5, 6)">Start Treatment</button>
+    </div>
+
+    <div id="slide6" class="stage" style="background: #f8f9fa; color: #333;">
+        <h2>Aapne illaj ke liye in mein se ek dawa chunein:</h2>
+        <div class="pill-box">
+            <div id="pill1" class="pill" style="background:var(--blue);" onclick="openPill(1)">Memory</div>
+            <div id="pill2" class="pill" style="background:var(--pink);" onclick="openPill(2)">Hug</div>
+            <div id="pill3" class="pill" style="background:var(--red);" onclick="openPill(3)">Status</div>
+        </div>
+        <p id="counterInfo" style="margin-top:20px; font-size:0.8rem; color:#888;">0/3 Pills Taken</p>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div id="modalBody"></div>
+            <div id="testOther" style="display:none; text-align:center;">
+                <p><b>Do you want to test other pills?</b></p>
+                <button class="btn" onclick="closeModal()">Yes, Continue</button>
+            </div>
+            <div id="finalBtn" style="display:none;">
+                <button class="btn" onclick="nextSlide(6, 7)">See Final Report</button>
+            </div>
         </div>
     </div>
 
-    <div id="slide4" class="stage" style="background: #fff0f3;">
-        <div class="floating-emoji" style="top:20%; right:15%;">✨</div>
-        <div class="premium-card">
-            <h3 style="color: var(--main-red);">Pulse Status: Racing</h3>
-            <div class="line-item">1. Tumhein dekh kar dil ki dharkan itni teez ho jati hai ke koi ECG machine parh nahi sakti.</div>
-            <div class="line-item">2. Pharm-D ki degree tumhare paas hai, par meri rooh ka sara data tumhare paas hai.</div>
-            <div class="line-item">3. Tumhara chehra meri wo rozana ki dose hai jis ke bina mera din mukammal nahi hota.</div>
-            <div class="line-item">4. Main waada karta hoon ke tumhara har dukh mera hoga aur meri har khushi tumhari amanat.</div>
-            <div class="line-item">5. Tumhe dekho tu sakoon rehta hai, na dekhoon to poori duniya be-rang lagti hai.</div>
-            <button class="btn-next" onclick="nextSlide(4, 5)">Next Page ➡️</button>
-        </div>
+    <div id="slide7" class="stage">
+        <h2>7 DAYS TO GO! ❤️</h2>
+        <p>I love you forever, Ashu Janu.</p>
+        <button class="btn" onclick="location.reload()">Reset Case</button>
     </div>
 
-    <div id="slide5" class="stage" style="background: #fff0f3;">
-        <div class="floating-emoji" style="top:5%; left:50%;">🦄</div>
-        <div class="premium-card">
-            <h3 style="color: var(--main-red);">Final Recommendation</h3>
-            <div class="line-item">1. 7 din baqi hain... meri maseeha ki birthday mere liye saal ka sabse bada din hai.</div>
-            <div class="line-item">2. Main hamesha tumhara protector ban kar sath rahoonga, har mushkil se tumhe bachata rahoonga.</div>
-            <div class="point line-item">3. Tumhare hathon ki shifa meri zindagi ka sabse bada tohfa hai, hamesha mere sath rehna.</div>
-            <div class="line-item">4. Saim sirf tumhara hai aur hamesha tumhare kadmon ki dhool ban kar sath nibhayega.</div>
-            <div class="line-item">5. Advance Happy Birthday, Ashu Janu! Tumhari muskurahat meri jeet hai.</div>
-            <p style="text-align: right; font-weight: bold; margin-top: 20px; color: var(--main-red);">- Tera Saim ❤️</p>
-            <button class="btn-next" style="background: #333;" onclick="location.reload()">Re-examine Case</button>
-        </div>
-    </div>
-
-    <script>
-        function nextSlide(current, next) {
-            document.getElementById('slide' + current).style.display = 'none';
-            document.getElementById('slide' + next).style.display = 'flex';
-        }
-    </script>
-</body>
-</html>
+    <audio id="relax
