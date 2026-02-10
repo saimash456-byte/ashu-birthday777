@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>7 Days Left - Doc Room</title>
+    <title>7 Days Left - Saim's Special</title>
     <style>
         :root { --red: #d90429; --blue: #00b4d8; --pink: #ff85a1; }
         body, html { margin:0; padding:0; overflow:hidden; font-family:'Times New Roman', serif; background: #000; color: white; }
@@ -20,20 +20,20 @@
         /* ECG & Heart */
         .ecg-svg { width: 100%; height: 100px; stroke: var(--red); stroke-width: 3; fill: none; animation: dash 2s linear infinite; }
         @keyframes dash { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
-        .heart { font-size: 80px; animation: beat 0.8s infinite; cursor: pointer; }
+        .heart { font-size: 80px; animation: beat 0.6s infinite; cursor: pointer; }
         @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
 
         /* Pills */
         .pill-box { display: flex; gap: 15px; margin-top: 30px; }
-        .pill { width: 85px; height: 40px; border-radius: 25px; cursor: pointer; border: 2px solid #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; font-family: sans-serif; }
+        .pill { width: 85px; height: 45px; border-radius: 25px; cursor: pointer; border: 2px solid #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
         .disabled { opacity: 0.3; pointer-events: none; }
 
         .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:100; justify-content:center; align-items:center; padding:20px; box-sizing:border-box; }
         .modal-content { background:white; color:#222; padding:25px; border-radius:15px; width:100%; max-width:400px; text-align:left; max-height: 85vh; overflow-y: auto; }
         .btn { background: var(--red); color:white; border:none; padding:15px; border-radius:8px; width:100%; font-weight:bold; margin-top:15px; cursor:pointer; }
         
-        .hug-arms { font-size: 80px; text-align: center; animation: pulse 1s infinite alternate; cursor: pointer; display:block; margin: 10px 0; }
-        .point { margin-bottom: 10px; line-height: 1.4; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 0.9rem; font-style: italic; }
+        .point { margin-bottom: 10px; line-height: 1.4; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 0.95rem; font-style: italic; }
+        .final-msg { font-size: 1.5rem; color: var(--red); animation: pulse 1s infinite alternate; }
 
         @keyframes pulse { from { transform: scale(0.9); } to { transform: scale(1.1); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -43,9 +43,7 @@
 
     <div id="slide1" class="stage active">
         <div class="door-container" onclick="openDoor()">
-            <div id="mainDoor" class="door">
-                <div class="knob"></div>
-            </div>
+            <div id="mainDoor" class="door"><div class="knob"></div></div>
         </div>
         <h3 id="doorStatus" style="margin-top:20px;">* KNOCK KNOCK *</h3>
     </div>
@@ -54,7 +52,6 @@
         <h2>"Ma'am ek emergency hai!"</h2>
         <button class="btn" onclick="nextSlide(2, 3)">Kia Hua?</button>
     </div>
-
     <div id="slide3" class="stage">
         <h2>"Banda bhagta aaya aur ye letter de gaya... bht serious halat hai!"</h2>
         <button class="btn" onclick="nextSlide(3, 4)">Check Patient</button>
@@ -70,44 +67,44 @@
             <path d="M0,50 L50,50 L60,20 L75,80 L90,50 L150,50 L160,10 L180,90 L200,50 L500,50" />
         </svg>
         <h3 style="padding:10px;">"Tmne dil ko touch keya tu dekho teez hogai dharkan!"</h3>
-        <button class="btn" onclick="nextSlide(5, 6)">Start Treatment</button>
+        <button class="btn" onclick="stopHeartSound()">Start Treatment</button>
     </div>
 
     <div id="slide6" class="stage" style="background: #f8f9fa; color: #333;">
-        <h2 style="font-family: sans-serif;">Dawa chunein:</h2>
+        <h2>Dawa chunein:</h2>
         <div class="pill-box">
-            <div id="p1" class="pill" style="background:var(--blue);" onclick="openPill(1)">Memory</div>
-            <div id="p2" class="pill" style="background:var(--pink);" onclick="openPill(2)">Hug</div>
-            <div id="p3" class="pill" style="background:var(--red);" onclick="openPill(3)">Diagnosis</div>
+            <div id="p1" class="pill" style="background:var(--blue);" onclick="openPill(1)">💊</div>
+            <div id="p2" class="pill" style="background:var(--pink);" onclick="openPill(2)">💊</div>
+            <div id="p3" class="pill" style="background:var(--red);" onclick="openPill(3)">💊</div>
         </div>
-        <p id="pillStatus" style="margin-top:20px; font-size:0.8rem; font-family: sans-serif;">Pills taken: 0/3</p>
+        <p id="pillStatus" style="margin-top:20px; font-size:0.8rem;">Pills taken: 0/3</p>
     </div>
 
     <div id="modal" class="modal">
         <div class="modal-content">
             <div id="modalBody"></div>
-            
-            <div id="diagNav" style="display:none;">
-                <button class="btn" onclick="showDiagPage(2)">Next Page</button>
-            </div>
-
+            <div id="diagNav" style="display:none;"><button class="btn" onclick="showDiagPage(2)">Next Page</button></div>
             <div id="pillOption" style="display:none; text-align:center;">
                 <p><b>Do you want to test other pills?</b></p>
                 <button class="btn" onclick="closeModal()">Yes</button>
             </div>
-            <div id="finalLink" style="display:none;">
-                <button class="btn" onclick="nextSlide(6, 7)">Final Report</button>
+            <div id="moreOption" style="display:none;">
+                <button class="btn" style="background:black;" onclick="nextSlide(6, 7)">Show More Options</button>
             </div>
         </div>
     </div>
 
     <div id="slide7" class="stage">
-        <h2>7 DAYS TO GO! ❤️</h2>
-        <p>Advance Happy Birthday, Ashu Janu! I love you forever.</p>
-        <button class="btn" onclick="location.reload()">Back to Cabin</button>
+        <div style="font-size: 40px;">💖💖💖</div>
+        <h1 class="final-msg">I love you Meri kul Kainat ❤️</h1>
+        <p style="font-size: 1.2rem;">7 days left with happy birthday in advance</p>
+        <h2 style="color: var(--pink);">Mera Ras Malai 🍮</h2>
+        <div style="font-size: 40px;">💞💞💞</div>
+        <button class="btn" style="width:auto; padding: 10px 40px;" onclick="location.reload()">Reset Case</button>
     </div>
 
-    <audio id="relaxSong" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg"></audio>
+    <audio id="heartSound" loop><source src="https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3" type="audio/mpeg"></audio>
+    <audio id="romanticMusic" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"></audio>
 
     <script>
         let taken = new Set();
@@ -117,43 +114,37 @@
         }
         function openDoor() {
             document.getElementById('mainDoor').classList.add('open');
-            document.getElementById('doorStatus').innerText = "DOOR OPENING...";
             setTimeout(() => nextSlide(1, 2), 1500);
         }
         function triggerHeart() {
-            if(navigator.vibrate) navigator.vibrate(200);
+            document.getElementById('heartSound').play();
+            if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
             nextSlide(4, 5);
+        }
+        function stopHeartSound() {
+            document.getElementById('heartSound').pause();
+            nextSlide(5, 6);
         }
 
         function showDiagPage(page) {
             const b = document.getElementById('modalBody');
             const nav = document.getElementById('diagNav');
             const opt = document.getElementById('pillOption');
-            const fin = document.getElementById('finalLink');
+            const more = document.getElementById('moreOption');
 
             if(page === 1) {
-                b.innerHTML = `<h3>Diagnosis - Page 1</h3>
-                <div class="point">1. Jab se tumhein dekha hai, mujhe apna aap bhool gaya hai, bas tumhari talash rehti hai.</div>
+                b.innerHTML = `<h3>Diagnosis - Page 1 💊</h3>
+                <div class="point">1. Jab se tumhein dekha hai, mujhe apna aap bhool gaya hai.</div>
                 <div class="point">2. Tum mere liye sirf ek Doctor nahi, meri zindagi ki sabse haseen "Shifa" ho.</div>
-                <div class="point">3. Log kehte hain dil baayi (left) taraf hota hai, par mera dil wahan hai jahan tum ho.</div>
-                <div class="point">4. Tumhare bina meri har pulse rate itni low hoti hai ke lagta hai saans ruk jayegi.</div>
-                <div class="point">5. Main apna har marz tumhare naam karta hoon, bas tumhari ek muskurahat dawa ban jaye.</div>
-                <div class="point">6. Tumhein dekh kar dil ki dharkan itni teez ho jati hai ke koi ECG machine parh nahi sakti.</div>
+                <div class="point">3. Log kehte hain dil baayi taraf hota hai, par mera dil wahan hai jahan tum ho.</div>
                 <div class="point">7. Pharm-D ki degree tumhare paas hai, par meri rooh ka sara data tumhare paas hai.</div>`;
-                nav.style.display = 'block';
-                opt.style.display = 'none';
+                nav.style.display = 'block'; opt.style.display = 'none';
             } else {
-                b.innerHTML = `<h3>Diagnosis - Page 2</h3>
-                <div class="point">8. Tumhara chehra meri wo rozana ki dose hai jis ke bina mera din mukammal nahi hota.</div>
-                <div class="point">9. Main waada karta hoon ke tumhara har dukh mera hoga aur meri har khushi tumhari amanat.</div>
-                <div class="point">10. Tumhe dekho tu sakoon rehta hai, na dekhoon to poori duniya be-rang lagti hai.</div>
-                <div class="point">11. 7 din baqi hain... meri maseeha ki birthday mere liye saal ka sabse bada din hai.</div>
-                <div class="point">12. Main hamesha tumhara protector ban kar sath rahoonga, har mushkil se tumhe bachata rahoonga.</div>
-                <div class="point">13. Tumhare hathon ki shifa meri zindagi ka sabse bada tohfa hai, hamesha mere sath rehna.</div>
-                <div class="point">14. Saim sirf tumhara hai aur hamesha tumhare kadmon ki dhool ban kar sath nibhayega.</div>
+                b.innerHTML = `<h3>Diagnosis - Page 2 💊</h3>
+                <div class="point">8. Tumhara chehra meri wo rozana ki dose hai.</div>
                 <div class="point">15. Advance Happy Birthday, Ashu Janu! Tumhari muskurahat meri jeet hai.</div>`;
                 nav.style.display = 'none';
-                if(taken.size === 3) { fin.style.display = 'block'; } else { opt.style.display = 'block'; }
+                if(taken.size === 3) more.style.display = 'block'; else opt.style.display = 'block';
             }
         }
 
@@ -164,35 +155,29 @@
             const m = document.getElementById('modal');
             const b = document.getElementById('modalBody');
             const opt = document.getElementById('pillOption');
-            const fin = document.getElementById('finalLink');
-            const nav = document.getElementById('diagNav');
-            
+            const more = document.getElementById('moreOption');
             m.style.display = 'flex';
-            nav.style.display = 'none';
-            fin.style.display = 'none';
             
             if(n===1) {
-                b.innerHTML = `<h3>Faisal & 33 Years</h3>
-                <p class="point">Yaad hei jb tmne FB par faisal ko kaha tha ke 'Saim jesa koi nhi ho skta, saim special bht hei aur koi uski jagah nhi lei skta'...</p>
-                <p class="point">Tu maine be-had lucky feel kiya tha ke main itna important hoon apni Ashu Janu ke liye.</p>
-                <p class="point">Aur jb tmne kaha tha ke '33 saal aur baat kre gei group mei'... tu mujhe laga tha ke koi bina mujh sy uktae mere sath agr reh skta tu wo sirf TUM ho.</p>`;
-                if(taken.size === 3) fin.style.display = 'block'; else opt.style.display = 'block';
+                b.innerHTML = `<h3>Memory 💊</h3><p class="point">Yaad hei jb tmne FB par faisal ko kaha tha ke 'Saim jesa koi nhi ho skta'...</p><p class="point">Aur jb tmne kaha tha ke '33 saal aur baat kre gei group mei'...</p>`;
             } else if(n===2) {
-                document.getElementById('relaxSong').play();
-                b.innerHTML = `<h3>Saim wants to hug you...</h3>
-                <p>Touch below to accept:</p>
-                <div class="hug-arms" onclick="document.getElementById('hMsg').style.display='block'">🫂</div>
-                <div id="hMsg" style="display:none; text-align:center;"><p><b>Close your eyes to feel...</b></p></div>`;
-                if(taken.size === 3) fin.style.display = 'block'; else opt.style.display = 'block';
+                b.innerHTML = `<h3>Virtual Hug 🫂</h3><p>Touch bazu to feel:</p><div style="font-size:60px; text-align:center;" onclick="this.innerHTML='Close your eyes... 🫂'">🫂</div>`;
             } else if(n===3) {
-                showDiagPage(1);
+                showDiagPage(1); return;
             }
+
+            if(taken.size === 3) { more.style.display = 'block'; opt.style.display = 'none'; }
+            else { opt.style.display = 'block'; more.style.display = 'none'; }
         }
 
-        function closeModal() { 
-            document.getElementById('modal').style.display = 'none'; 
-            document.getElementById('relaxSong').pause(); 
-        }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+        
+        // Final Slide triggers music
+        window.addEventListener('click', function() {
+            if(document.getElementById('slide7').classList.contains('active')) {
+                document.getElementById('romanticMusic').play();
+            }
+        });
     </script>
 </body>
 </html>
