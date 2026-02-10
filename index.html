@@ -3,49 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>7 Days Left - Emergency</title>
+    <title>7 Days Left - Doc Room</title>
     <style>
         :root { --red: #d90429; --blue: #00b4d8; --pink: #ff85a1; }
-        body, html { margin:0; padding:0; overflow:hidden; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #000; color: white; }
+        body, html { margin:0; padding:0; overflow:hidden; font-family:'Segoe UI', sans-serif; background: #000; color: white; }
         .stage { display:none; width:100vw; height:100vh; justify-content:center; align-items:center; flex-direction:column; text-align:center; position:absolute; padding: 20px; box-sizing: border-box; }
         .active { display:flex; animation: fadeIn 0.5s forwards; }
 
-        /* Door */
-        .door { width: 130px; height: 210px; background: #5d4037; border: 4px solid #3e2723; border-radius: 5px; position: relative; cursor: pointer; }
-        .door::after { content: 'DOC ROOM'; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 2px 8px; font-size: 0.6rem; font-weight: bold; }
-        
-        /* ECG Line Animation */
-        .ecg-container { width: 100%; height: 150px; position: relative; overflow: hidden; background: #000; border-bottom: 2px solid #333; }
-        .ecg-svg { width: 200%; height: 100%; stroke: var(--red); stroke-width: 3; fill: none; stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: dash 3s linear infinite; }
-        @keyframes dash { to { stroke-dashoffset: 0; } }
+        /* Door Animation */
+        .door-container { perspective: 1000px; cursor: pointer; }
+        .door { width: 140px; height: 220px; background: #5d4037; border: 4px solid #3e2723; border-radius: 5px; position: relative; transform-origin: left; transition: transform 1.2s ease-in-out; }
+        .door.open { transform: rotateY(-110deg); }
+        .door::after { content: 'DR. ASHU ROOM'; position: absolute; top: 25px; left: 50%; transform: translateX(-50%); background: white; color: black; padding: 2px 8px; font-size: 0.6rem; font-weight: bold; width: 80px; }
+        .knob { position:absolute; right:12px; top:50%; width:12px; height:12px; background:gold; border-radius:50%; box-shadow: 0 0 10px gold; }
 
-        /* Heart Beat */
-        .heart { font-size: 80px; color: var(--red); cursor: pointer; animation: beat 0.8s infinite; }
-        @keyframes beat { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        /* ECG & Heart */
+        .ecg-svg { width: 100%; height: 100px; stroke: var(--red); stroke-width: 3; fill: none; animation: dash 2s linear infinite; }
+        @keyframes dash { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
+        .heart { font-size: 80px; animation: beat 0.8s infinite; cursor: pointer; }
+        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
 
         /* Pills */
-        .pill-box { display: flex; gap: 20px; margin-top: 30px; }
-        .pill { width: 80px; height: 40px; border-radius: 25px; cursor: pointer; border: 2px solid #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; }
-        .disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+        .pill-box { display: flex; gap: 15px; margin-top: 30px; }
+        .pill { width: 85px; height: 40px; border-radius: 25px; cursor: pointer; border: 2px solid #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+        .disabled { opacity: 0.3; pointer-events: none; }
 
-        /* Letter/Modal */
         .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:100; justify-content:center; align-items:center; padding:20px; box-sizing:border-box; }
-        .modal-content { background:white; color:#222; padding:25px; border-radius:15px; width:100%; max-width:400px; text-align:left; position:relative; }
-        
+        .modal-content { background:white; color:#222; padding:25px; border-radius:15px; width:100%; max-width:400px; text-align:left; }
         .btn { background: var(--red); color:white; border:none; padding:15px; border-radius:8px; width:100%; font-weight:bold; margin-top:15px; cursor:pointer; }
         
-        .hug-arms { font-size: 100px; text-align: center; animation: pulse 1s infinite alternate; display: block; }
-        @keyframes pulse { from { transform: scale(0.8); } to { transform: scale(1.1); } }
+        .hug-arms { font-size: 80px; text-align: center; animation: pulse 1s infinite alternate; cursor: pointer; }
+        @keyframes pulse { from { transform: scale(0.9); } to { transform: scale(1.1); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div id="slide1" class="stage active">
-        <div class="door" onclick="playKnock()">
-            <div style="position:absolute; right:10px; top:50%; width:10px; height:10px; background:gold; border-radius:50%;"></div>
+        <div class="door-container" onclick="openDoor()">
+            <div id="mainDoor" class="door">
+                <div class="knob"></div>
+            </div>
         </div>
-        <h3 id="knockText" style="margin-top:20px;">KNOCK KNOCK</h3>
+        <h3 id="doorStatus" style="margin-top:20px;">* KNOCK KNOCK *</h3>
     </div>
 
     <div id="slide2" class="stage">
@@ -59,47 +59,83 @@
     </div>
 
     <div id="slide4" class="stage">
-        <div class="heart" onclick="triggerVibrate()">❤️</div>
+        <div class="heart" onclick="triggerHeart()">❤️</div>
         <p>Touch the heart to check pulse</p>
     </div>
 
     <div id="slide5" class="stage">
-        <div class="ecg-container">
-            <svg class="ecg-svg" viewBox="0 0 1000 100">
-                <path d="M0,50 L50,50 L60,20 L75,80 L90,50 L150,50 L160,10 L180,90 L200,50 L300,50 L310,20 L325,80 L340,50 L1000,50" />
-            </svg>
-        </div>
-        <h3 style="padding:20px;">"Tmne dil ko touch keya tu dekho teez hogai dharkan!"</h3>
+        <svg class="ecg-svg" viewBox="0 0 500 100" style="stroke-dasharray: 1000;">
+            <path d="M0,50 L50,50 L60,20 L75,80 L90,50 L150,50 L160,10 L180,90 L200,50 L500,50" />
+        </svg>
+        <h3 style="padding:10px;">"Tmne dil ko touch keya tu dekho teez hogai dharkan!"</h3>
         <button class="btn" onclick="nextSlide(5, 6)">Start Treatment</button>
     </div>
 
     <div id="slide6" class="stage" style="background: #f8f9fa; color: #333;">
-        <h2>Aapne illaj ke liye in mein se ek dawa chunein:</h2>
+        <h2>Dawa chunein:</h2>
         <div class="pill-box">
-            <div id="pill1" class="pill" style="background:var(--blue);" onclick="openPill(1)">Memory</div>
-            <div id="pill2" class="pill" style="background:var(--pink);" onclick="openPill(2)">Hug</div>
-            <div id="pill3" class="pill" style="background:var(--red);" onclick="openPill(3)">Status</div>
+            <div id="p1" class="pill" style="background:var(--blue);" onclick="openPill(1)">Memory</div>
+            <div id="p2" class="pill" style="background:var(--pink);" onclick="openPill(2)">Hug</div>
+            <div id="p3" class="pill" style="background:var(--red);" onclick="openPill(3)">Status</div>
         </div>
-        <p id="counterInfo" style="margin-top:20px; font-size:0.8rem; color:#888;">0/3 Pills Taken</p>
+        <p id="pillStatus" style="margin-top:20px; font-size:0.8rem;">Pills taken: 0/3</p>
     </div>
 
     <div id="modal" class="modal">
         <div class="modal-content">
             <div id="modalBody"></div>
-            <div id="testOther" style="display:none; text-align:center;">
+            <div id="pillOption" style="display:none; text-align:center;">
                 <p><b>Do you want to test other pills?</b></p>
-                <button class="btn" onclick="closeModal()">Yes, Continue</button>
+                <button class="btn" onclick="closeModal()">Yes</button>
             </div>
-            <div id="finalBtn" style="display:none;">
-                <button class="btn" onclick="nextSlide(6, 7)">See Final Report</button>
+            <div id="finalLink" style="display:none;">
+                <button class="btn" onclick="nextSlide(6, 7)">Final Report</button>
             </div>
         </div>
     </div>
 
     <div id="slide7" class="stage">
         <h2>7 DAYS TO GO! ❤️</h2>
-        <p>I love you forever, Ashu Janu.</p>
-        <button class="btn" onclick="location.reload()">Reset Case</button>
+        <p>Advance Happy Birthday, Ashu Janu! I love you forever.</p>
+        <button class="btn" onclick="location.reload()">Back to Cabin</button>
     </div>
 
-    <audio id="relax
+    <audio id="relaxSong" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg"></audio>
+
+    <script>
+        let taken = new Set();
+        function nextSlide(c, n) {
+            document.getElementById('slide'+c).classList.remove('active');
+            document.getElementById('slide'+n).classList.add('active');
+        }
+        function openDoor() {
+            document.getElementById('mainDoor').classList.add('open');
+            document.getElementById('doorStatus').innerText = "DOOR OPENING...";
+            setTimeout(() => nextSlide(1, 2), 1500);
+        }
+        function triggerHeart() {
+            if(navigator.vibrate) navigator.vibrate(200);
+            nextSlide(4, 5);
+        }
+        function openPill(n) {
+            taken.add(n);
+            document.getElementById('p'+n).classList.add('disabled');
+            document.getElementById('pillStatus').innerText = "Pills taken: " + taken.size + "/3";
+            const m = document.getElementById('modal');
+            const b = document.getElementById('modalBody');
+            m.style.display = 'flex';
+            if(n===1) {
+                b.innerHTML = `<h3>Faisal & 33 Years</h3><p>"Yaad hei jb tmne FB par faisal ko kaha tha ke 'Saim jesa koi nhi ho skta, saim special bht hei aur koi uski jagah nhi lei skta'..."</p><p>"Tu maine be-had lucky feel kiya tha ke main itna important hoon apni Ashu Janu ke liye."</p><p>"Aur jb tmne kaha tha ke '33 saal aur baat kre gei group mei'... tu mujhe laga tha ke koi bina mujh sy uktae mere sath agr reh skta tu wo sirf TUM ho."</p>`;
+            } else if(n===2) {
+                document.getElementById('relaxSong').play();
+                b.innerHTML = `<h3>Saim wants to hug you...</h3><p>Touch below to accept:</p><div class="hug-arms" onclick="document.getElementById('hMsg').style.display='block'">🫂</div><div id="hMsg" style="display:none; text-align:center;"><p><b>Close your eyes to feel...</b></p></div>`;
+            } else if(n===3) {
+                b.innerHTML = `<h3>The Lines</h3><p>Jab sy tumhein dekha mujhe apna aap bhool giya... tum na ho tu dil bechain rehta hei.</p><p>Tumhein dekhoon tu sakoon rehta hei... tumhein dekh ke dil ki dharkan itni teez ho jati hei ke koi medicine kaam nahi karti.</p>`;
+            }
+            if(taken.size === 3) { document.getElementById('finalLink').style.display='block'; document.getElementById('pillOption').style.display='none'; }
+            else { document.getElementById('pillOption').style.display='block'; }
+        }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; document.getElementById('relaxSong').pause(); }
+    </script>
+</body>
+</html>
